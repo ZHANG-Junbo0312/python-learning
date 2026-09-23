@@ -1,0 +1,65 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+import matplotlib.gridspec as gridspec
+
+df_major = pd.DataFrame({
+    'Major': ['Engineering', 'Comp Sci', 'Math/Sci', 'Social Sci', 'Business', 'Ag/Nat Res', 'Comms'],
+    'Salary': [78731, 76251, 69709, 67316, 65276, 63122, 60353]
+}).sort_values('Salary', ascending=True)
+
+df_level = pd.DataFrame({
+    'Level': ['Less than HS', 'HS Diploma', 'Some College', 'Associate', 'Bachelor', 'Master', 'Doctoral', 'Professional'],
+    'Salary': [38376, 48360, 53040, 57148, 80236, 95680, 118456, 122876]
+}).sort_values('Salary', ascending=True)
+
+df_age = pd.DataFrame({
+    'Age': ['20-24', '25-34', '35-44', '45-54', '55-64', '65+'],
+    'Salary': [41184, 58500, 69264, 71552, 67704, 63544]
+})
+
+df_gender = pd.DataFrame({
+    'Level': ['Associate/Some Col', 'Bachelor', 'Advanced Degree'],
+    'Male': [62868, 92040, 117572],
+    'Female': [47892, 69888, 88556]
+})
+
+fig = plt.figure(figsize=(15, 9))
+plt.subplots_adjust(top=0.86, bottom=0.08, left=0.08, right=0.97, wspace=0.28, hspace=0.42)
+fig.suptitle("What's Your Degree Worth?\nUSA Graduate Salary Insights — 2025 Projection", fontsize=20)
+
+gs = gridspec.GridSpec(2, 2)
+ax1 = fig.add_subplot(gs[0, 0])
+ax2 = fig.add_subplot(gs[0, 1])
+ax3 = fig.add_subplot(gs[1, 0])
+ax4 = fig.add_subplot(gs[1, 1])
+
+df_major.plot(ax=ax1, kind='barh', x='Major', y='Salary', color='#2B6CB0', legend=False)
+ax1.set_title('Engineering Leads 2025 Starting Salaries')
+ax1.set_xlabel('Projected starting salary (USD)')
+ax1.set_ylabel('')
+ax1.set_xlim(0, 90000)
+ax1.grid(visible=True, axis='x')
+
+df_level.plot(ax=ax2, kind='barh', x='Level', y='Salary', color='#2B6CB0', legend=False)
+ax2.set_title('The Education Ladder: Higher Degree, Higher Pay')
+ax2.set_xlabel('Median annual salary (USD)')
+ax2.set_ylabel('')
+ax2.set_xlim(0, 145000)
+ax2.grid(visible=True, axis='x')
+
+df_age.plot(ax=ax3, kind='line', x='Age', y='Salary', marker='o', color='#2B6CB0', legend=False)
+ax3.set_title('Peak Earnings by Age: Highest at 45-54')
+ax3.set_xlabel('Age group')
+ax3.set_ylabel('Median annual salary (USD)')
+ax3.set_ylim(0, 85000)
+ax3.grid(visible=True)
+
+df_gender.plot(ax=ax4, kind='bar', x='Level', y=['Male', 'Female'], color=['#2C5282', '#C05621'], rot=0)
+ax4.set_title('A Persistent Gender Pay Gap in 2025')
+ax4.set_xlabel('Education level (age 25+)')
+ax4.set_ylabel('Median annual earnings (USD)')
+ax4.set_ylim(0, 140000)
+ax4.legend(loc='upper left')
+ax4.grid(visible=True, axis='y')
+
+plt.show()
