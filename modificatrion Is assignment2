@@ -1,0 +1,71 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+import matplotlib.gridspec as gridspec
+
+fig = plt.figure(figsize=(15, 9))
+plt.subplots_adjust(top=0.88, bottom=0.10, left=0.10, right=0.95, wspace=0.32, hspace=0.40)
+fig.suptitle('USA College Graduate Salary : 2025 Projection', fontsize=24)
+
+gs = gridspec.GridSpec(2, 2)
+ax1 = fig.add_subplot(gs[0, 0])
+ax2 = fig.add_subplot(gs[0, 1])
+ax3 = fig.add_subplot(gs[1, 0])
+ax4 = fig.add_subplot(gs[1, 1])
+
+df_major = pd.DataFrame({
+    'Major': ['Comms', 'Ag/Nat Res', 'Business', 'Social Sci', 'Math/Sci', 'Comp Sci', 'Engineering'],
+    'Salary': [60353, 63122, 65276, 67316, 69709, 76251, 78731]
+})
+df_major.plot(ax=ax1, kind='barh', x='Major', y='Salary', color='b', legend=False)
+ax1.set_title('2025 Starting Salary by Major')
+ax1.set_xlabel('Salary in USD $')
+ax1.set_ylabel('Major')
+ax1.set_xlim(0, 95000)
+ax1.grid(visible=True, axis='x')
+for bar, value in zip(ax1.patches, df_major['Salary']):
+    ax1.text(value + 800, bar.get_y() + bar.get_height() / 2, f'${value:,}', va='center', fontsize=8)
+
+df_level = pd.DataFrame({
+    'Level': ['Less than HS', 'HS Diploma', 'Some College', 'Associate', 'Bachelor', 'Master', 'Doctoral', 'Professional'],
+    'Salary': [38376, 48360, 53040, 57148, 80236, 95680, 118456, 122876]
+})
+df_level.plot(ax=ax2, kind='barh', x='Level', y='Salary', color='g', legend=False)
+ax2.set_title('Median Salary by Education Level')
+ax2.set_xlabel('Salary in USD $')
+ax2.set_ylabel('Education Level')
+ax2.set_xlim(0, 150000)
+ax2.grid(visible=True, axis='x')
+for bar, value in zip(ax2.patches, df_level['Salary']):
+    ax2.text(value + 1500, bar.get_y() + bar.get_height() / 2, f'${value:,}', va='center', fontsize=8)
+
+df_age = pd.DataFrame({
+    'Age': ['20-24', '25-34', '35-44', '45-54', '55-64', '65+'],
+    'Salary': [41184, 58500, 69264, 71552, 67704, 63544]
+})
+df_age.plot(ax=ax3, kind='line', marker='o', x='Age', y='Salary', color='y', legend=False)
+ax3.set_title('Median Salary by Age')
+ax3.set_xlabel('Age')
+ax3.set_ylabel('Salary in USD $')
+ax3.set_ylim(0, 85000)
+ax3.grid(visible=True)
+age_offset = [2500, 2500, 2800, 2800, -4500, 2500]
+for i, value in enumerate(df_age['Salary']):
+    ax3.text(i, value + age_offset[i], f'${value:,}', ha='center', fontsize=8)
+
+df_gender = pd.DataFrame({
+    'Level': ['Associate', 'Bachelor', 'Advanced'],
+    'Male': [62868, 92040, 117572],
+    'Female': [47892, 69888, 88556]
+})
+df_gender.plot(ax=ax4, kind='bar', x='Level', color=['b', 'y'], rot=0)
+ax4.set_title('Salary by Gender and Education')
+ax4.set_xlabel('Education Level')
+ax4.set_ylabel('Salary in USD $')
+ax4.set_ylim(0, 140000)
+ax4.grid(visible=True, axis='y')
+ax4.legend(loc='upper left')
+ax4.bar_label(ax4.containers[0], fmt='${:,.0f}', fontsize=7, padding=2)
+ax4.bar_label(ax4.containers[1], fmt='${:,.0f}', fontsize=7, padding=2)
+
+plt.savefig('Workshop01B_charts.png')
+plt.show()
